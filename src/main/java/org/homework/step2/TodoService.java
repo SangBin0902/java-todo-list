@@ -34,7 +34,7 @@ public class TodoService {
     public String viewTodoById(int id) {
         Todo todo = todoRepository.findById(id);
         if(todo != null) {
-            return todo.getTitle();
+            return todo.toString();
         } else {
             return "해당 ID를 찾을 수 없습니다.";
         }
