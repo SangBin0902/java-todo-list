@@ -1,4 +1,4 @@
-package org.homework.step2;
+package org.homework.step3;
 
 public class Main {
     public static void main(String[] args) {

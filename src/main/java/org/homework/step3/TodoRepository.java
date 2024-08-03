@@ -1,6 +1,4 @@
-package org.homework.step2;
-
-import org.homework.Task;
+package org.homework.step3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,13 +7,20 @@ import java.util.Map;
 
 public class TodoRepository {
     private Map<Integer, Todo> todoMap = new HashMap<>();
+    private int nextId;
 
     public void add(Todo todo) {
+
         todoMap.put(todo.getId(), todo);
     }
 
-    public void remove(Todo todo) {
-        todoMap.remove(todo.getId(), todo);
+    public void remove(int id) {
+
+        // todoMap.remove(todo.getId(), todo);
+        if (!todoMap.containsKey(id)) {
+            throw new IllegalArgumentException("해당 ID를 찾을 수 없습니다.");
+        }
+        todoMap.remove(id);
     }
 
     public Todo findById(int id) {
@@ -24,5 +29,9 @@ public class TodoRepository {
 
     public List<Todo> findAll() {
         return new ArrayList<>(todoMap.values());
+    }
+
+    public  int getNextId() {
+        return ++nextId;
     }
 }
