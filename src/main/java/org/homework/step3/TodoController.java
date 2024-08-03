@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TodoController {
@@ -73,43 +74,38 @@ public class TodoController {
         while(isRunning) {
             outputView.printMessage("옵션을 선택하세요. 1. 추가, 2. 삭제, 3. 조회, 4. 완료, 5. 전체 조회, 6. 종료");
             int action = inputView.readAction();
-            Command command;
-
-            // OutputView.printMessage("옵션을 선택하세요. 1. 추가, 2. 삭제, 3. 조회, 4. 완료, 5. 종료");
-            // int option = InputView.readMenuOption();
 
             try {
-                // Command command = Command.fromValue(option);
-                command = Command.fromInt(action);
+                Command command = Optional.ofNullable(Command.fromInt(action))
+                        .orElseThrow(() -> new IllegalArgumentException("잘못된 입력입니다."));
+
+                switch (command) {
+                    case ADD:
+                        handleAdd();
+                        break;
+                    case REMOVE:
+                        handelRemove();
+                        break;
+                    case VIEW:
+                        handleSearch();
+                        break;
+                    case COMPLETE:
+                        handleComplete();
+                        break;
+                    case VIEW_ALL:
+                        handleView();
+                        break;
+                    case EXIT:
+                        outputView.printMessage("프로그램을 종료합니다.");
+                        isRunning = false;
+                        return;
+                    default:
+                        outputView.printMessage("올바른 옵션을 선택하세요.");
+                        break;
+
+                }
             } catch (IllegalArgumentException e) {
-                outputView.printMessage("잘못된 입력입니다.");
-                continue;
-            }
-
-            switch (command) {
-                case ADD:
-                    handleAdd();
-                    break;
-                case REMOVE:
-                    handelRemove();
-                    break;
-                case VIEW:
-                    handleSearch();
-                    break;
-                case COMPLETE:
-                    handleComplete();
-                    break;
-                case VIEW_ALL:
-                    handleView();
-                    break;
-                case EXIT:
-                    outputView.printMessage("프로그램을 종료합니다.");
-                    isRunning = false;
-                    return;
-                default:
-                    outputView.printMessage("올바른 옵션을 선택하세요.");
-                    break;
-
+                outputView.printMessage(e.getMessage());
             }
         }
     }
